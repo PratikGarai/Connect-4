@@ -35,6 +35,14 @@ def draw_board(screen, board):
             )
     pygame.display.update()
 
+def draw_top_circle(screen, turn, pos):
+    pygame.draw.rect(screen, BLACK, (0, 0, COLS*SQUARE_SIZE, SQUARE_SIZE))
+    if turn==0:
+        pygame.draw.circle(screen, RED, (pos,CIRCLE_OFFSET), RADIUS)
+    else :
+        pygame.draw.circle(screen, GREEN, (pos,CIRCLE_OFFSET), RADIUS)
+    pygame.display.update()
+
 
 if __name__=="__main__":
     pygame.init()
@@ -50,13 +58,20 @@ if __name__=="__main__":
 
     draw_board(screen, b.board)
 
-    while not game_over :
-
+    while True :
         for event in pygame.event.get():
             if event.type == pygame.QUIT :
                 sys.exit()
+
+            if event.type == pygame.MOUSEMOTION : 
+                if game_over : 
+                    continue
+                x = event.pos[0]
+                draw_top_circle(screen, turn, x)
             
             if event.type == pygame.MOUSEBUTTONDOWN:
+                if game_over : 
+                    continue
                 pos = event.pos
                 col = pos[0]//SQUARE_SIZE
                 print(col)
@@ -91,5 +106,6 @@ if __name__=="__main__":
                         print("Player 2 wins")
                         game_over = True
                         break
-
+                
                 turn = (turn+1)%2
+                draw_top_circle(screen, turn, pos[0])
