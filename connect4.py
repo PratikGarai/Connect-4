@@ -19,6 +19,50 @@ class Board :
         for r in range(self.cols):
             if self.board[r][col]==0:
                 return r
+    
+
+    def print_board(self):
+        b = np.flip(self.board, 0)
+        print(b)
+
+
+    def winning_move(self, piece):
+
+        # Horizontal check
+        for c in range(self.cols-3):
+            for r in range(self.rows):
+                if self.board[r][c]==piece and \
+                    self.board[r][c+1]==piece and \
+                    self.board[r][c+2]==piece and \
+                    self.board[r][c+3]==piece :
+                    return True
+        
+        # Vertical check
+        for c in range(self.cols):
+            for r in range(self.rows-3):
+                if self.board[r][c]==piece and \
+                    self.board[r+1][c]==piece and \
+                    self.board[r+2][c]==piece and \
+                    self.board[r+3][c]==piece :
+                    return True
+        
+        # Top Left to Bottom Right check
+        for c in range(self.cols-3):
+            for r in range(self.rows-3):
+                if self.board[r][c]==piece and \
+                    self.board[r+1][c+1]==piece and \
+                    self.board[r+2][c+2]==piece and \
+                    self.board[r+3][c+3]==piece :
+                    return True
+        
+        # Bottom Left to Top Right check
+        for c in range(self.cols-3):
+            for r in range(3, self.rows):
+                if self.board[r][c]==piece and \
+                    self.board[r-1][c+1]==piece and \
+                    self.board[r-2][c+2]==piece and \
+                    self.board[r-3][c+3]==piece :
+                    return True
 
 
 if __name__=="__main__":
@@ -39,6 +83,10 @@ if __name__=="__main__":
                 if flag : 
                     b.drop_piece(b.getNextOpenRow(col), col, 1)
 
+            if b.winning_move(1):
+                print("Player 1 wins")
+                break
+
         else :
             # Player 2 input
             flag = False
@@ -48,6 +96,10 @@ if __name__=="__main__":
                 flag = b.isvalidLocation(col)
                 if flag : 
                     b.drop_piece(b.getNextOpenRow(col), col, 2)
+            
+            if b.winning_move(2):
+                print("Player 2 wins")
+                break
 
-        print(b.board)
+        b.print_board()
         turn = (turn+1)%2
