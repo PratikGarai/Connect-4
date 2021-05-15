@@ -1,24 +1,27 @@
 import numpy as np 
 
-def create_board() :
-    board = np.zeros((6,7))
-    return board
+class Board :
+    def __init__(self, rows = 6, cols = 7):
+        self.rows = rows
+        self.cols = cols
+        self.board = np.zeros((self.rows,self.cols))
 
 
-def drop_piece() :
-    pass
+    def drop_piece(self) :
+        pass
 
 
-def isvalidLocation() :
-    pass
+    def isvalidLocation(self, col) :
+        pass
 
 
-def getNextOpenRow() :
-    pass
+    def getNextOpenRow(self) :
+        pass
+
 
 if __name__=="__main__":
-    board = create_board()
-    print(board)
+    b = Board()
+    print(b.board)
 
     game_over = False
     turn = 0
