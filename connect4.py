@@ -7,16 +7,18 @@ class Board :
         self.board = np.zeros((self.rows,self.cols))
 
 
-    def drop_piece(self) :
-        pass
+    def drop_piece(self, row, col, piece) :
+        self.board[row][col] = piece
 
 
     def isvalidLocation(self, col) :
-        pass
+        return col<self.cols and self.board[self.rows-1][col]==0
 
 
-    def getNextOpenRow(self) :
-        pass
+    def getNextOpenRow(self, col) :
+        for r in range(self.cols):
+            if self.board[r][col]==0:
+                return r
 
 
 if __name__=="__main__":
@@ -29,12 +31,23 @@ if __name__=="__main__":
         
         if turn == 0 :
             # Player 1 input
-            print("Player 1 , enter your selection(0-6) : ", end="")
-            col = int(input()) 
+            flag = False
+            while not flag :
+                print(f'Player 1 , enter your selection(0-{b.cols}) : ', end="")
+                col = int(input()) 
+                flag = b.isvalidLocation(col)
+                if flag : 
+                    b.drop_piece(b.getNextOpenRow(col), col, 1)
 
         else :
             # Player 2 input
-            print("Player 2 , enter your selection(0-6) : ", end="")
-            col = int(input()) 
+            flag = False
+            while not flag :
+                print(f'Player 2 , enter your selection(0-{b.cols}) : ', end="")
+                col = int(input()) 
+                flag = b.isvalidLocation(col)
+                if flag : 
+                    b.drop_piece(b.getNextOpenRow(col), col, 2)
 
+        print(b.board)
         turn = (turn+1)%2
